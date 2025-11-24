@@ -3,38 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enviar Mensajes de WhatsApp</title>
+    <title>Reparador de Conexión ISP</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="app">
-        <h1>Enviar Mensajes de WhatsApp</h1>
+    <div class="container">
+        <header>
+            <div class="logo">🌐 NetFix Utility</div>
+            <div class="status">Estado: <span id="connectionStatus">Verificando...</span></div>
+        </header>
 
-        <div class="card">
-            <h2>1. Escribe tu mensaje</h2>
-            <textarea id="message" rows="4" placeholder="Hola, te contacto para..."></textarea>
-        </div>
-
-        <div class="card">
-            <h2>2. Agrega los números de teléfono</h2>
-            <p>Añade el código de país, sin el símbolo '+' ni espacios. Ejemplo para Argentina: 5491123456789</p>
-            <div class="input-group">
-                <input type="tel" id="phoneNumber" placeholder="5491123456789">
-                <button id="addContactBtn">Agregar</button>
+        <main>
+            <div class="card warning-card">
+                <h2>⚠️ Bloqueo de ISP Detectado</h2>
+                <p>Tu proveedor de internet (Speedy/Telefónica) está bloqueando tu conexión mediante restricciones DNS o Hardware. Una página web no puede cambiar tu configuración de sistema automáticamente por seguridad del navegador.</p>
+                <p><strong>Solución Real:</strong> Debes cambiar la configuración DNS de tu computadora para evadir el bloqueo del ISP. Hemos creado un script automático para hacerlo por ti.</p>
             </div>
-            <h3>Contactos a enviar:</h3>
-            <ul id="contactList">
-                <!-- Los números agregados aparecerán aquí -->
-            </ul>
-        </div>
 
-        <div class="card">
-            <h2>3. Genera los enlaces de WhatsApp</h2>
-            <button id="generateLinksBtn">Generar Enlaces</button>
-            <div id="linksContainer">
-                <!-- Los enlaces generados aparecerán aquí -->
+            <div class="card action-card">
+                <h2>Opción 1: Reparación Automática (Windows)</h2>
+                <p>Descarga y ejecuta este archivo para cambiar tus DNS a Google (8.8.8.8) automáticamente.</p>
+                <button id="downloadScriptBtn" class="primary-btn">⬇️ Descargar Script de Reparación (.bat)</button>
+                <p class="small-text">Nota: Al abrir el archivo, Windows puede preguntar si confías en él. Ejecútalo como Administrador para mejores resultados.</p>
             </div>
-        </div>
+
+            <div class="card manual-card">
+                <h2>Opción 2: Configuración Manual</h2>
+                <p>Si prefieres hacerlo tú mismo o usas Mac/Linux/Android:</p>
+
+                <div class="tabs">
+                    <button class="tab-btn active" data-target="windows-manual">Windows</button>
+                    <button class="tab-btn" data-target="android-manual">Android</button>
+                    <button class="tab-btn" data-target="mac-manual">Mac/iOS</button>
+                </div>
+
+                <div id="windows-manual" class="tab-content active">
+                    <ol>
+                        <li>Presiona <strong>Tecla Windows + R</strong>, escribe <code>ncpa.cpl</code> y presiona Enter.</li>
+                        <li>Click derecho en tu conexión (Wi-Fi o Ethernet) > <strong>Propiedades</strong>.</li>
+                        <li>Doble click en <strong>Protocolo de Internet versión 4 (TCP/IPv4)</strong>.</li>
+                        <li>Selecciona "Usar las siguientes direcciones de servidor DNS".</li>
+                        <li>Preferido: <code>8.8.8.8</code> | Alternativo: <code>8.8.4.4</code></li>
+                        <li>Aceptar y reiniciar navegador.</li>
+                    </ol>
+                </div>
+
+                <div id="android-manual" class="tab-content">
+                    <ol>
+                        <li>Ve a <strong>Configuración > Wi-Fi</strong>.</li>
+                        <li>Mantén presionada tu red conectada > <strong>Modificar red</strong>.</li>
+                        <li>Opciones avanzadas > Configuración IP > <strong>Estático</strong>.</li>
+                        <li>En DNS 1 escribe: <code>8.8.8.8</code></li>
+                        <li>En DNS 2 escribe: <code>8.8.4.4</code></li>
+                        <li>Guardar.</li>
+                    </ol>
+                </div>
+
+                <div id="mac-manual" class="tab-content">
+                    <ol>
+                        <li>Preferencias del Sistema > <strong>Red</strong>.</li>
+                        <li>Selecciona tu conexión > <strong>Avanzado</strong> > Pestaña <strong>DNS</strong>.</li>
+                        <li>Click en el botón <strong>(+)</strong>.</li>
+                        <li>Añade <code>8.8.8.8</code> y <code>1.1.1.1</code>.</li>
+                        <li>Aceptar > Aplicar.</li>
+                    </ol>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <p>NetFix Utility v2.1 - Herramienta de ayuda técnica</p>
+        </footer>
     </div>
     <script src="script.js"></script>
 </body>

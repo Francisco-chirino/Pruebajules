@@ -1,119 +1,91 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- DOM Elements ---
-    const messageEl = document.getElementById('message');
-    const phoneNumberEl = document.getElementById('phoneNumber');
-    const addContactBtn = document.getElementById('addContactBtn');
-    const contactListEl = document.getElementById('contactList');
-    const generateLinksBtn = document.getElementById('generateLinksBtn');
-    const linksContainerEl = document.getElementById('linksContainer');
+    const downloadBtn = document.getElementById('downloadScriptBtn');
+    const statusSpan = document.getElementById('connectionStatus');
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
 
-    // --- State ---
-    let contacts = [];
+    // Check connectivity (Simple simulation of status check)
+    if (navigator.onLine) {
+        statusSpan.textContent = "En línea (Conectado)";
+        statusSpan.style.color = "#2e7d32";
+    } else {
+        statusSpan.textContent = "Sin conexión";
+        statusSpan.style.color = "#d32f2f";
+    }
 
-    // --- Functions ---
-
-    /**
-     * Renders the current list of contacts to the DOM.
-     */
-    const renderContacts = () => {
-        contactListEl.innerHTML = ''; // Clear the list
-        if (contacts.length === 0) {
-            const p = document.createElement('p');
-            p.textContent = 'No hay contactos agregados.';
-            contactListEl.appendChild(p);
-            return;
-        }
-        contacts.forEach((contact, index) => {
-            const li = document.createElement('li');
-
-            const numberSpan = document.createElement('span');
-            numberSpan.textContent = contact;
-
-            const removeBtn = document.createElement('button');
-            removeBtn.textContent = 'Quitar';
-            removeBtn.onclick = () => removeContact(index);
-
-            li.appendChild(numberSpan);
-            li.appendChild(removeBtn);
-            contactListEl.appendChild(li);
-        });
-    };
-
-    /**
-     * Adds a new contact to the list.
-     */
-    const addContact = () => {
-        // Remove any non-numeric characters from the phone number
-        const phoneNumber = phoneNumberEl.value.trim().replace(/\D/g, '');
-
-        if (phoneNumber) {
-            if (!contacts.includes(phoneNumber)) {
-                contacts.push(phoneNumber);
-                renderContacts();
-            } else {
-                alert('Este número ya está en la lista.');
-            }
-            phoneNumberEl.value = '';
-            phoneNumberEl.focus();
-        } else {
-            alert('Por favor, ingresa un número de teléfono válido.');
-        }
-    };
-
-    /**
-     * Removes a contact from the list by its index.
-     * @param {number} index - The index of the contact to remove.
-     */
-    const removeContact = (index) => {
-        contacts.splice(index, 1);
-        renderContacts();
-        // Also clear the generated links if a contact is removed
-        linksContainerEl.innerHTML = '';
-    };
-
-    /**
-     * Generates and displays the WhatsApp chat links.
-     */
-    const generateLinks = () => {
-        const message = messageEl.value.trim();
-        if (!message) {
-            alert('Por favor, escribe un mensaje.');
-            messageEl.focus();
-            return;
-        }
-        if (contacts.length === 0) {
-            alert('Por favor, agrega al menos un contacto.');
-            phoneNumberEl.focus();
-            return;
-        }
-
-        linksContainerEl.innerHTML = ''; // Clear previous links
-        const encodedMessage = encodeURIComponent(message);
-
-        contacts.forEach(contact => {
-            const link = document.createElement('a');
-            link.href = `https://wa.me/${contact}?text=${encodedMessage}`;
-            link.target = '_blank'; // Open in new tab
-            link.rel = 'noopener noreferrer';
-            link.textContent = `Enviar mensaje a ${contact}`;
-            linksContainerEl.appendChild(link);
-        });
-    };
-
-    // --- Event Listeners ---
-    addContactBtn.addEventListener('click', addContact);
-
-    // Allow adding contact by pressing Enter key in the input field
-    phoneNumberEl.addEventListener('keypress', (event) => {
-        if (event.key === 'Enter') {
-            // Prevent form submission if it's inside a form
-            event.preventDefault();
-            addContact();
-        }
+    window.addEventListener('online', () => {
+        statusSpan.textContent = "En línea (Conectado)";
+        statusSpan.style.color = "#2e7d32";
     });
 
-    generateLinksBtn.addEventListener('click', generateLinks);
+    window.addEventListener('offline', () => {
+        statusSpan.textContent = "Sin conexión";
+        statusSpan.style.color = "#d32f2f";
+    });
 
-    // --- Initial Render ---
-    renderContacts();
+    // Download Script Logic
+    downloadBtn.addEventListener('click', () => {
+        const batchContent = `@echo off
+echo ==========================================
+echo      REPARADOR DE CONEXION NETFIX
+echo ==========================================
+echo.
+echo Este script intentara cambiar tus DNS a Google Public DNS
+echo para evadir bloqueos simples de ISP.
+echo.
+echo Requiere permisos de Administrador.
+echo.
+pause
+
+echo.
+echo [1/3] Configurando DNS para Wi-Fi...
+netsh interface ip set dns name="Wi-Fi" static 8.8.8.8
+netsh interface ip add dns name="Wi-Fi" 8.8.4.4 index=2
+
+echo.
+echo [2/3] Configurando DNS para Ethernet...
+netsh interface ip set dns name="Ethernet" static 8.8.8.8
+netsh interface ip add dns name="Ethernet" 8.8.4.4 index=2
+
+echo.
+echo [3/3] Limpiando cache DNS...
+ipconfig /flushdns
+
+echo.
+echo ==========================================
+echo      PROCESO COMPLETADO
+echo ==========================================
+echo Intenta navegar ahora. Si no funciona, reinicia tu PC.
+echo.
+pause
+`;
+        downloadFile('reparar_internet.bat', batchContent);
+    });
+
+    function downloadFile(filename, content) {
+        const element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+        element.setAttribute('download', filename);
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+    }
+
+    // Tabs Logic
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remove active class from all
+            tabBtns.forEach(b => b.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+
+            // Add active to clicked
+            btn.classList.add('active');
+            const targetId = btn.getAttribute('data-target');
+            document.getElementById(targetId).classList.add('active');
+        });
+    });
 });
