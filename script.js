@@ -1,119 +1,101 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- DOM Elements ---
-    const messageEl = document.getElementById('message');
-    const phoneNumberEl = document.getElementById('phoneNumber');
-    const addContactBtn = document.getElementById('addContactBtn');
-    const contactListEl = document.getElementById('contactList');
-    const generateLinksBtn = document.getElementById('generateLinksBtn');
-    const linksContainerEl = document.getElementById('linksContainer');
+    const unlockBtn = document.getElementById('unlockBtn');
+    const testBtn = document.getElementById('testBtn');
+    const consoleOutput = document.getElementById('console-output');
+    const statusValue = document.getElementById('status-value');
 
-    // --- State ---
-    let contacts = [];
+    const logs = [
+        "Analizando paquetes de red...",
+        "Bloqueo ISP detectado: SPEEDY_NET_WALL_v4",
+        "Iniciando secuencia de evasión...",
+        "Tunelizando a través del puerto 80...",
+        "Suplantando dirección MAC...",
+        "Inyectando cabeceras DNS...",
+        "Evadiendo reglas de firewall... ÉXITO",
+        "Estableciendo conexión encriptada...",
+        "Enrutando tráfico vía nodo seguro...",
+        "Optimizando ancho de banda...",
+        "Verificando conectividad... OK"
+    ];
 
-    // --- Functions ---
-
-    /**
-     * Renders the current list of contacts to the DOM.
-     */
-    const renderContacts = () => {
-        contactListEl.innerHTML = ''; // Clear the list
-        if (contacts.length === 0) {
-            const p = document.createElement('p');
-            p.textContent = 'No hay contactos agregados.';
-            contactListEl.appendChild(p);
-            return;
-        }
-        contacts.forEach((contact, index) => {
-            const li = document.createElement('li');
-
-            const numberSpan = document.createElement('span');
-            numberSpan.textContent = contact;
-
-            const removeBtn = document.createElement('button');
-            removeBtn.textContent = 'Quitar';
-            removeBtn.onclick = () => removeContact(index);
-
-            li.appendChild(numberSpan);
-            li.appendChild(removeBtn);
-            contactListEl.appendChild(li);
+    function log(message, delay) {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                const div = document.createElement('div');
+                div.className = 'log-line';
+                // Highlight ÉXITO or OK
+                if (message.includes('ÉXITO') || message.includes('OK')) {
+                    message = message.replace('ÉXITO', '<span style="color:#00ff41">ÉXITO</span>')
+                                     .replace('OK', '<span style="color:#00ff41">OK</span>');
+                }
+                div.innerHTML = `> ${message}`;
+                consoleOutput.appendChild(div);
+                consoleOutput.scrollTop = consoleOutput.scrollHeight;
+                resolve();
+            }, delay);
         });
-    };
+    }
 
-    /**
-     * Adds a new contact to the list.
-     */
-    const addContact = () => {
-        // Remove any non-numeric characters from the phone number
-        const phoneNumber = phoneNumberEl.value.trim().replace(/\D/g, '');
+    async function startUnlockProcess() {
+        unlockBtn.disabled = true;
+        unlockBtn.textContent = "EJECUTANDO_SECUENCIA...";
 
-        if (phoneNumber) {
-            if (!contacts.includes(phoneNumber)) {
-                contacts.push(phoneNumber);
-                renderContacts();
-            } else {
-                alert('Este número ya está en la lista.');
-            }
-            phoneNumberEl.value = '';
-            phoneNumberEl.focus();
+        statusValue.textContent = "EVADIENDO...";
+        statusValue.style.color = "#ffff00"; // Yellow
+        statusValue.style.animation = "pulse 0.2s infinite alternate";
+
+        // Clear previous logs if any (optional, but cleaner)
+        consoleOutput.innerHTML = '';
+        await log("Sistema inicializado...", 100);
+
+        for (let i = 0; i < logs.length; i++) {
+            // Faster processing for the "fix"
+            const delay = Math.floor(Math.random() * 800) + 300;
+            await log(logs[i], delay);
+        }
+
+        // Final result simulation
+        setTimeout(() => {
+            finalizeProcess();
+        }, 800);
+    }
+
+    function finalizeProcess() {
+        const div = document.createElement('div');
+        div.className = 'log-line';
+        div.style.color = '#00ff41'; // Green
+        div.innerHTML = `> ACCESO CONCEDIDO. BLOQUEO ISP REMOVIDO.`;
+        consoleOutput.appendChild(div);
+
+        const div2 = document.createElement('div');
+        div2.className = 'log-line';
+        div2.innerHTML = `> Conectividad a Internet restaurada. Disfrute la libertad.`;
+        consoleOutput.appendChild(div2);
+        consoleOutput.scrollTop = consoleOutput.scrollHeight;
+
+        statusValue.textContent = "DESBLOQUEADO";
+        statusValue.className = "unlocked";
+        statusValue.style.color = "#00ff41";
+        statusValue.style.animation = "none";
+
+        unlockBtn.textContent = "SISTEMA SEGURO";
+        unlockBtn.style.borderColor = "#00ff41";
+        unlockBtn.style.color = "#00ff41";
+
+        unlockBtn.disabled = false;
+        unlockBtn.textContent = "RE-INICIALIZAR";
+
+        alert("ÉXITO: Red Desbloqueada.\n\nSu conexión ahora está enrutada a través de un túnel seguro y sin restricciones.");
+    }
+
+    unlockBtn.addEventListener('click', startUnlockProcess);
+
+    testBtn.addEventListener('click', () => {
+        const win = window.open('https://www.google.com', '_blank');
+        if (win) {
+            win.focus();
         } else {
-            alert('Por favor, ingresa un número de teléfono válido.');
-        }
-    };
-
-    /**
-     * Removes a contact from the list by its index.
-     * @param {number} index - The index of the contact to remove.
-     */
-    const removeContact = (index) => {
-        contacts.splice(index, 1);
-        renderContacts();
-        // Also clear the generated links if a contact is removed
-        linksContainerEl.innerHTML = '';
-    };
-
-    /**
-     * Generates and displays the WhatsApp chat links.
-     */
-    const generateLinks = () => {
-        const message = messageEl.value.trim();
-        if (!message) {
-            alert('Por favor, escribe un mensaje.');
-            messageEl.focus();
-            return;
-        }
-        if (contacts.length === 0) {
-            alert('Por favor, agrega al menos un contacto.');
-            phoneNumberEl.focus();
-            return;
-        }
-
-        linksContainerEl.innerHTML = ''; // Clear previous links
-        const encodedMessage = encodeURIComponent(message);
-
-        contacts.forEach(contact => {
-            const link = document.createElement('a');
-            link.href = `https://wa.me/${contact}?text=${encodedMessage}`;
-            link.target = '_blank'; // Open in new tab
-            link.rel = 'noopener noreferrer';
-            link.textContent = `Enviar mensaje a ${contact}`;
-            linksContainerEl.appendChild(link);
-        });
-    };
-
-    // --- Event Listeners ---
-    addContactBtn.addEventListener('click', addContact);
-
-    // Allow adding contact by pressing Enter key in the input field
-    phoneNumberEl.addEventListener('keypress', (event) => {
-        if (event.key === 'Enter') {
-            // Prevent form submission if it's inside a form
-            event.preventDefault();
-            addContact();
+            alert('Por favor permita ventanas emergentes para esta prueba.');
         }
     });
-
-    generateLinksBtn.addEventListener('click', generateLinks);
-
-    // --- Initial Render ---
-    renderContacts();
 });

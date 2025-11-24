@@ -3,38 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enviar Mensajes de WhatsApp</title>
+    <title>Herramienta de Desbloqueo de Internet</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="app">
-        <h1>Enviar Mensajes de WhatsApp</h1>
-
-        <div class="card">
-            <h2>1. Escribe tu mensaje</h2>
-            <textarea id="message" rows="4" placeholder="Hola, te contacto para..."></textarea>
-        </div>
-
-        <div class="card">
-            <h2>2. Agrega los números de teléfono</h2>
-            <p>Añade el código de país, sin el símbolo '+' ni espacios. Ejemplo para Argentina: 5491123456789</p>
-            <div class="input-group">
-                <input type="tel" id="phoneNumber" placeholder="5491123456789">
-                <button id="addContactBtn">Agregar</button>
+    <div class="container">
+        <header>
+            <h1><span class="icon">🔓</span> NET_LIBERATOR <span class="version">v1.0</span></h1>
+            <div class="status-bar">
+                <span id="status-label">ESTADO:</span>
+                <span id="status-value" class="blocked">BLOQUEADO</span>
             </div>
-            <h3>Contactos a enviar:</h3>
-            <ul id="contactList">
-                <!-- Los números agregados aparecerán aquí -->
-            </ul>
-        </div>
+        </header>
 
-        <div class="card">
-            <h2>3. Genera los enlaces de WhatsApp</h2>
-            <button id="generateLinksBtn">Generar Enlaces</button>
-            <div id="linksContainer">
-                <!-- Los enlaces generados aparecerán aquí -->
+        <main>
+            <div class="panel control-panel">
+                <h2>CENTRO_DE_CONTROL</h2>
+                <p>Sistema Objetivo: ISP_GATEWAY (Speedy)</p>
+                <div class="button-group">
+                    <button id="unlockBtn" class="glitch-btn">INICIAR SECUENCIA DE DESBLOQUEO</button>
+                    <button id="testBtn" class="secondary-btn">PROBAR CONECTIVIDAD</button>
+                </div>
             </div>
-        </div>
+
+            <div class="panel log-panel">
+                <h2>REGISTRO_DEL_SISTEMA</h2>
+                <div id="console-output">
+                    <div class="log-line">> Sistema inicializado...</div>
+                    <div class="log-line">> Esperando entrada del usuario...</div>
+                </div>
+            </div>
+
+            <div class="panel info-panel">
+                <h2>PROTOCOLOS_MANUALES</h2>
+                <p>Si el desbloqueo automático falla, ejecute lo siguiente manualmente:</p>
+                <ul>
+                    <li><strong>Protocolo A (DNS):</strong> Cambiar DNS Primario a <code>8.8.8.8</code> (Google) o <code>1.1.1.1</code> (Cloudflare).</li>
+                    <li><strong>Protocolo B (Flush):</strong> Abrir terminal y ejecutar <code>ipconfig /flushdns</code>.</li>
+                    <li><strong>Protocolo C (Admin):</strong> Contactar soporte ISP por "Estado de Pago".</li>
+                </ul>
+            </div>
+        </main>
     </div>
     <script src="script.js"></script>
 </body>
