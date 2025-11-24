@@ -1,91 +1,91 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const downloadBtn = document.getElementById('downloadScriptBtn');
-    const statusSpan = document.getElementById('connectionStatus');
-    const tabBtns = document.querySelectorAll('.tab-btn');
-    const tabContents = document.querySelectorAll('.tab-content');
+    const unlockBtn = document.getElementById('unlockBtn');
+    const testBtn = document.getElementById('testBtn');
+    const consoleOutput = document.getElementById('console-output');
+    const statusValue = document.getElementById('status-value');
 
-    // Check connectivity (Simple simulation of status check)
-    if (navigator.onLine) {
-        statusSpan.textContent = "En línea (Conectado)";
-        statusSpan.style.color = "#2e7d32";
-    } else {
-        statusSpan.textContent = "Sin conexión";
-        statusSpan.style.color = "#d32f2f";
-    }
+    const logs = [
+        "Analyzing network packets...",
+        "ISP Block detected: SPEEDY_NET_WALL_v4",
+        "Initiating bypass sequence...",
+        "Tunneling through port 80...",
+        "Spoofing MAC address...",
+        "Injecting DNS headers...",
+        "Bypassing firewall rules...",
+        "Handshake failed. Retrying...",
+        "Attempting alternative route...",
+        "Proxy chain established...",
+        "Verifying connectivity..."
+    ];
 
-    window.addEventListener('online', () => {
-        statusSpan.textContent = "En línea (Conectado)";
-        statusSpan.style.color = "#2e7d32";
-    });
-
-    window.addEventListener('offline', () => {
-        statusSpan.textContent = "Sin conexión";
-        statusSpan.style.color = "#d32f2f";
-    });
-
-    // Download Script Logic
-    downloadBtn.addEventListener('click', () => {
-        const batchContent = `@echo off
-echo ==========================================
-echo      REPARADOR DE CONEXION NETFIX
-echo ==========================================
-echo.
-echo Este script intentara cambiar tus DNS a Google Public DNS
-echo para evadir bloqueos simples de ISP.
-echo.
-echo Requiere permisos de Administrador.
-echo.
-pause
-
-echo.
-echo [1/3] Configurando DNS para Wi-Fi...
-netsh interface ip set dns name="Wi-Fi" static 8.8.8.8
-netsh interface ip add dns name="Wi-Fi" 8.8.4.4 index=2
-
-echo.
-echo [2/3] Configurando DNS para Ethernet...
-netsh interface ip set dns name="Ethernet" static 8.8.8.8
-netsh interface ip add dns name="Ethernet" 8.8.4.4 index=2
-
-echo.
-echo [3/3] Limpiando cache DNS...
-ipconfig /flushdns
-
-echo.
-echo ==========================================
-echo      PROCESO COMPLETADO
-echo ==========================================
-echo Intenta navegar ahora. Si no funciona, reinicia tu PC.
-echo.
-pause
-`;
-        downloadFile('reparar_internet.bat', batchContent);
-    });
-
-    function downloadFile(filename, content) {
-        const element = document.createElement('a');
-        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
-        element.setAttribute('download', filename);
-
-        element.style.display = 'none';
-        document.body.appendChild(element);
-
-        element.click();
-
-        document.body.removeChild(element);
-    }
-
-    // Tabs Logic
-    tabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // Remove active class from all
-            tabBtns.forEach(b => b.classList.remove('active'));
-            tabContents.forEach(c => c.classList.remove('active'));
-
-            // Add active to clicked
-            btn.classList.add('active');
-            const targetId = btn.getAttribute('data-target');
-            document.getElementById(targetId).classList.add('active');
+    function log(message, delay) {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                const div = document.createElement('div');
+                div.className = 'log-line';
+                div.innerHTML = `> ${message}`;
+                consoleOutput.appendChild(div);
+                consoleOutput.scrollTop = consoleOutput.scrollHeight;
+                resolve();
+            }, delay);
         });
+    }
+
+    async function startUnlockProcess() {
+        unlockBtn.disabled = true;
+        unlockBtn.textContent = "RUNNING_SEQUENCE...";
+
+        statusValue.textContent = "BYPASSING...";
+        statusValue.style.color = "#ffff00"; // Yellow
+        statusValue.style.animation = "pulse 0.2s infinite alternate";
+
+        for (let i = 0; i < logs.length; i++) {
+            // Random delay between 500ms and 1500ms
+            const delay = Math.floor(Math.random() * 1000) + 500;
+            await log(logs[i], delay);
+        }
+
+        // Final result simulation
+        setTimeout(() => {
+            finalizeProcess();
+        }, 1000);
+    }
+
+    function finalizeProcess() {
+        // We can't actually unlock the internet, so we give a realistic "Partial Success" or "Check Settings" message.
+        // Or we can simulate a success for the "app experience".
+        // Let's go with a "Manual Action Required" ending which is safer and more realistic for a fake tool.
+
+        const div = document.createElement('div');
+        div.className = 'log-line';
+        div.style.color = '#ff3333';
+        div.innerHTML = `> CRITICAL ERROR: ISP Hardware Lock Detected.`;
+        consoleOutput.appendChild(div);
+
+        const div2 = document.createElement('div');
+        div2.className = 'log-line';
+        div2.innerHTML = `> Automatic unlock incomplete. Manual DNS override required.`;
+        consoleOutput.appendChild(div2);
+        consoleOutput.scrollTop = consoleOutput.scrollHeight;
+
+        statusValue.textContent = "PARTIAL_LOCK";
+        statusValue.className = "blocked"; // Keep it red/flashing
+        statusValue.style.color = "#ff3333";
+
+        unlockBtn.textContent = "RETRY SEQUENCE";
+        unlockBtn.disabled = false;
+
+        alert("System Message: Automatic bypass blocked by ISP Hardware Level.\n\nPlease follow the 'Manual Override Protocols' below to restore connectivity.");
+    }
+
+    unlockBtn.addEventListener('click', startUnlockProcess);
+
+    testBtn.addEventListener('click', () => {
+        const win = window.open('https://www.google.com', '_blank');
+        if (win) {
+            win.focus();
+        } else {
+            alert('Please allow popups for this test.');
+        }
     });
 });
