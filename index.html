@@ -3,38 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enviar Mensajes de WhatsApp</title>
+    <title>Reparador de Conexión ISP</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="app">
-        <h1>Enviar Mensajes de WhatsApp</h1>
+    <div class="container">
+        <header>
+            <div class="logo">🌐 NetFix Utility</div>
+            <div class="status">Estado: <span id="connectionStatus">Verificando...</span></div>
+        </header>
 
-        <div class="card">
-            <h2>1. Escribe tu mensaje</h2>
-            <textarea id="message" rows="4" placeholder="Hola, te contacto para..."></textarea>
-        </div>
-
-        <div class="card">
-            <h2>2. Agrega los números de teléfono</h2>
-            <p>Añade el código de país, sin el símbolo '+' ni espacios. Ejemplo para Argentina: 5491123456789</p>
-            <div class="input-group">
-                <input type="tel" id="phoneNumber" placeholder="5491123456789">
-                <button id="addContactBtn">Agregar</button>
+        <main>
+            <div class="card warning-card">
+                <h2>⚠️ Diagnóstico de Conexión</h2>
+                <p>Si ves una página de "Bloqueado" o "Blocked", tu ISP (Speedy/Telefónica) ha restringido tu acceso.</p>
+                <div class="alert-box">
+                    <strong>Tipos de Bloqueo:</strong>
+                    <ul>
+                        <li><strong>Bloqueo DNS/Configuración:</strong> Se soluciona cambiando la configuración (Script abajo).</li>
+                        <li><strong>Bloqueo por Deuda (Captive Portal):</strong> Si debes facturas, el ISP bloquea todo tráfico a nivel central. <u>Ningún software puede arreglar esto</u>, solo pagar.</li>
+                    </ul>
+                </div>
+                <div style="text-align: center; margin-top: 15px;">
+                    <button id="testConnectionBtn" class="secondary-btn">📡 Probar Conexión Real</button>
+                </div>
             </div>
-            <h3>Contactos a enviar:</h3>
-            <ul id="contactList">
-                <!-- Los números agregados aparecerán aquí -->
-            </ul>
-        </div>
 
-        <div class="card">
-            <h2>3. Genera los enlaces de WhatsApp</h2>
-            <button id="generateLinksBtn">Generar Enlaces</button>
-            <div id="linksContainer">
-                <!-- Los enlaces generados aparecerán aquí -->
+            <div class="card action-card">
+                <h2>Opción 1: Reparación Profunda (Windows)</h2>
+                <p>Este nuevo script busca todas tus tarjetas de red, cambia los DNS, renueva tu IP y resetea el sistema de sockets.</p>
+                <button id="downloadScriptBtn" class="primary-btn">⬇️ Descargar Reparador Universal (.bat)</button>
+                <p class="small-text">Instrucciones: Descarga > Click Derecho > <strong>Ejecutar como Administrador</strong> > Reiniciar PC.</p>
             </div>
-        </div>
+
+            <div class="card manual-card">
+                <h2>Opción 2: Guía Manual</h2>
+                <div class="tabs">
+                    <button class="tab-btn active" data-target="windows-manual">Windows</button>
+                    <button class="tab-btn" data-target="android-manual">Android</button>
+                    <button class="tab-btn" data-target="mac-manual">Mac/iOS</button>
+                </div>
+
+                <div id="windows-manual" class="tab-content active">
+                    <ol>
+                        <li>Presiona <strong>Tecla Windows + R</strong>.</li>
+                        <li>Escribe <code>ncpa.cpl</code> y presiona Enter.</li>
+                        <li>Click derecho en tu conexión > <strong>Propiedades</strong>.</li>
+                        <li>Doble click en <strong>Protocolo de Internet versión 4 (TCP/IPv4)</strong>.</li>
+                        <li>Marca "Usar las siguientes direcciones de servidor DNS".</li>
+                        <li>Preferido: <code>8.8.8.8</code> | Alternativo: <code>8.8.4.4</code></li>
+                        <li>Click en "Validar configuración al salir" y Aceptar.</li>
+                    </ol>
+                </div>
+
+                <div id="android-manual" class="tab-content">
+                    <ol>
+                        <li>Ve a <strong>Configuración > Wi-Fi</strong>.</li>
+                        <li>Toca la (i) o mantén presionado sobre tu red.</li>
+                        <li>Busca "Configuración IP" y cámbialo de DHCP a <strong>Estático</strong>.</li>
+                        <li>Busca los campos DNS 1 y DNS 2.</li>
+                        <li>Pon <code>8.8.8.8</code> y <code>8.8.4.4</code>.</li>
+                        <li>Guarda los cambios (el icono de check o guardar).</li>
+                    </ol>
+                </div>
+
+                <div id="mac-manual" class="tab-content">
+                    <ol>
+                        <li>Preferencias del Sistema > <strong>Red</strong>.</li>
+                        <li>Selecciona tu Wi-Fi/Ethernet > <strong>Avanzado...</strong></li>
+                        <li>Ve a la pestaña <strong>DNS</strong>.</li>
+                        <li>Usa el botón <strong>(+)</strong> para borrar los existentes y agregar nuevos.</li>
+                        <li>Agrega: <code>1.1.1.1</code> y <code>8.8.8.8</code>.</li>
+                        <li>Aceptar > Aplicar.</li>
+                    </ol>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <p>NetFix Utility v3.0 - Solución de Conflictos de Red</p>
+        </footer>
     </div>
     <script src="script.js"></script>
 </body>
