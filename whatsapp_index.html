@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enviar Mensajes de WhatsApp</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <h1>Enviar Mensajes de WhatsApp</h1>
+
+        <div class="card">
+            <h2>1. Escribe tu mensaje</h2>
+            <textarea id="message" rows="4" placeholder="Hola, te contacto para..."></textarea>
+        </div>
+
+        <div class="card">
+            <h2>2. Agrega los números de teléfono</h2>
+            <p>Añade el código de país, sin el símbolo '+' ni espacios. Ejemplo para Argentina: 5491123456789</p>
+            <div class="input-group">
+                <input type="tel" id="phoneNumber" placeholder="5491123456789">
+                <button id="addContactBtn">Agregar</button>
+            </div>
+            <h3>Contactos a enviar:</h3>
+            <ul id="contactList">
+                <!-- Los números agregados aparecerán aquí -->
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>3. Genera los enlaces de WhatsApp</h2>
+            <button id="generateLinksBtn">Generar Enlaces</button>
+            <div id="linksContainer">
+                <!-- Los enlaces generados aparecerán aquí -->
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

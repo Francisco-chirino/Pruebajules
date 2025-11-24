@@ -1,40 +1,50 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enviar Mensajes de WhatsApp</title>
+    <title>Internet Unlocker Tool</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="app">
-        <h1>Enviar Mensajes de WhatsApp</h1>
-
-        <div class="card">
-            <h2>1. Escribe tu mensaje</h2>
-            <textarea id="message" rows="4" placeholder="Hola, te contacto para..."></textarea>
-        </div>
-
-        <div class="card">
-            <h2>2. Agrega los números de teléfono</h2>
-            <p>Añade el código de país, sin el símbolo '+' ni espacios. Ejemplo para Argentina: 5491123456789</p>
-            <div class="input-group">
-                <input type="tel" id="phoneNumber" placeholder="5491123456789">
-                <button id="addContactBtn">Agregar</button>
+    <div class="container">
+        <header>
+            <h1><span class="icon">🔓</span> NET_LIBERATOR <span class="version">v1.0</span></h1>
+            <div class="status-bar">
+                <span id="status-label">STATUS:</span>
+                <span id="status-value" class="blocked">BLOCKED</span>
             </div>
-            <h3>Contactos a enviar:</h3>
-            <ul id="contactList">
-                <!-- Los números agregados aparecerán aquí -->
-            </ul>
-        </div>
+        </header>
 
-        <div class="card">
-            <h2>3. Genera los enlaces de WhatsApp</h2>
-            <button id="generateLinksBtn">Generar Enlaces</button>
-            <div id="linksContainer">
-                <!-- Los enlaces generados aparecerán aquí -->
+        <main>
+            <div class="panel control-panel">
+                <h2>CONTROL_CENTER</h2>
+                <p>Target System: ISP_GATEWAY (Speedy)</p>
+                <div class="button-group">
+                    <button id="unlockBtn" class="glitch-btn">INITIALIZE UNLOCK SEQUENCE</button>
+                    <button id="testBtn" class="secondary-btn">TEST CONNECTIVITY</button>
+                </div>
             </div>
-        </div>
+
+            <div class="panel log-panel">
+                <h2>SYSTEM_LOG</h2>
+                <div id="console-output">
+                    <div class="log-line">> System initialized...</div>
+                    <div class="log-line">> Waiting for user input...</div>
+                </div>
+            </div>
+
+            <div class="panel info-panel">
+                <h2>MANUAL_OVERRIDE_PROTOCOLS</h2>
+                <p>If automated bypass fails, execute the following protocols manually:</p>
+                <ul>
+                    <li><strong>Protocol A (DNS):</strong> Change Primary DNS to <code>8.8.8.8</code> (Google) or <code>1.1.1.1</code> (Cloudflare).</li>
+                    <li><strong>Protocol B (Flush):</strong> Open terminal and run <code>ipconfig /flushdns</code>.</li>
+                    <li><strong>Protocol C (Admin):</strong> Contact ISP Support regarding "Payment Status".</li>
+                </ul>
+            </div>
+        </main>
     </div>
     <script src="script.js"></script>
 </body>
